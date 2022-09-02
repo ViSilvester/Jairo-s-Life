@@ -3,7 +3,6 @@ import { enumWeater } from "../weatherController/enum_weather.js";
 
 export class InputController {
 
-
     private game: Game;
 
     constructor(game: Game) {
@@ -22,6 +21,9 @@ export class InputController {
                 break;
             case "2":
                 this.game.weatherController.setWeather(enumWeater.rain);
+                break;
+            case "3":
+                this.game.weatherController.setWeather(enumWeater.sun);
                 break;
         }
     }

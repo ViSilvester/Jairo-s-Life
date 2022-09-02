@@ -7,11 +7,7 @@ export class WeatherController {
     constructor() {
         this.wind = new Vec2(0, 0);
         this.particles = [];
-        this.currentWeather = enumWeater.snow;
-        this.currentModel = new RainModel();
-        this.spawnRate = 0.5;
-        this.spawnQuantity = 50;
-        this.backgroundColor = new Vec3(100, 100, 100);
+        this.setWeather(enumWeater.snow);
     }
     setWeather(weather) {
         this.currentWeather = weather;
@@ -21,12 +17,14 @@ export class WeatherController {
                 this.backgroundColor = new Vec3(100, 100, 100);
                 this.spawnRate = 0.1;
                 this.spawnQuantity = 20;
+                this.turbulenceRange = 0.025;
                 break;
             case enumWeater.rain:
                 this.currentModel = new RainModel();
                 this.backgroundColor = new Vec3(100, 100, 100);
                 this.spawnRate = 0.5;
                 this.spawnQuantity = 50;
+                this.turbulenceRange = 0;
                 break;
             case enumWeater.sun:
                 this.currentModel = new RainModel();
@@ -43,7 +41,11 @@ export class WeatherController {
                 this.particles.splice(0, quantity);
             }
             for (var i = 0; i < quantity; i++) {
-                this.particles.push(new Particle((Math.random() * worldWidth * 2) - (worldWidth / 2), 0 - (Math.random() * 10), new Vec2(this.wind.x, 0), this.currentModel));
+                var rx = (Math.random() * worldWidth * 2) - (worldWidth / 2);
+                var ry = 0 - (Math.random() * 10);
+                var rtx = (Math.random() - 0.5) * this.turbulenceRange;
+                var rty = (Math.random() - 0.5) * this.turbulenceRange;
+                this.particles.push(new Particle(rx, ry, new Vec2(rtx, rty), this.currentModel));
             }
         }
     }
@@ -67,9 +69,7 @@ export class WeatherController {
         if (this.wind.x < -1) {
             this.wind.x = -1;
         }
-        for (var i = 0; i < this.particles.length; i++) {
-            this.particles[i].velocity.x = this.wind.x;
-        }
+        this.currentModel.setForce(new Vec2(wind.x, this.currentModel.force.y));
     }
     render(draw, worldScale) {
         for (var i = 0; i < this.particles.length; i++) {

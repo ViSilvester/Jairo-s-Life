@@ -14,6 +14,9 @@ export class InputController {
             case "2":
                 this.game.weatherController.setWeather(enumWeater.rain);
                 break;
+            case "3":
+                this.game.weatherController.setWeather(enumWeater.sun);
+                break;
         }
     }
 }

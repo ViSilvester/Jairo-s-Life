@@ -1,6 +1,6 @@
 
 import { Draw } from "../../model/draw/draw.js";
-import { Vec2 } from "../../model/geometry/geometry.js";
+import { Vec2, Vec3 } from "../../model/geometry/geometry.js";
 import { Particle } from "../../model/particle/particle.js";
 import { ParticleModel } from "../../model/particleModel/particleModel.js";
 import { RainModel } from "../../model/particleModel/rainModel/rainModel.js";
@@ -11,19 +11,18 @@ export class WeatherController {
 
     particles: Array<Particle>;
     wind: Vec2;
-    currentWeather: enumWeater;
-    currentModel: ParticleModel;
-    spawnRate: number;
-    spawnQuantity: number;
+    currentWeather!: enumWeater;
+    currentModel!: ParticleModel;
+    spawnRate!: number;
+    spawnQuantity!: number;
+    turbulenceRange!: number;
+    backgroundColor!: Vec3;
 
 
     constructor() {
         this.wind = new Vec2(0, 0);
         this.particles = [];
-        this.currentWeather = enumWeater.snow;
-        this.currentModel = new RainModel();
-        this.spawnRate = 0.5;
-        this.spawnQuantity = 50;
+        this.setWeather(enumWeater.snow);
     }
 
     setWeather(weather: enumWeater) {
@@ -32,13 +31,23 @@ export class WeatherController {
         switch (weather) {
             case enumWeater.snow:
                 this.currentModel = new SnowModel();
+                this.backgroundColor = new Vec3(100, 100, 100)
                 this.spawnRate = 0.1;
                 this.spawnQuantity = 20;
+                this.turbulenceRange = 0.025;
                 break;
             case enumWeater.rain:
                 this.currentModel = new RainModel();
+                this.backgroundColor = new Vec3(100, 100, 100)
                 this.spawnRate = 0.5;
                 this.spawnQuantity = 50;
+                this.turbulenceRange = 0;
+                break;
+            case enumWeater.sun:
+                this.currentModel = new RainModel();
+                this.backgroundColor = new Vec3(31, 138, 224)
+                this.spawnRate = 0;
+                this.spawnQuantity = 0;
                 break;
         }
     }
@@ -54,11 +63,17 @@ export class WeatherController {
             }
 
             for (var i = 0; i < quantity; i++) {
+
+                var rx = (Math.random() * worldWidth * 2) - (worldWidth / 2);
+                var ry = 0 - (Math.random() * 10)
+                var rtx = (Math.random() - 0.5) * this.turbulenceRange;
+                var rty = (Math.random() - 0.5) * this.turbulenceRange;
+
                 this.particles.push(
                     new Particle(
-                        (Math.random() * worldWidth * 3) - worldWidth,
-                        0 - (Math.random() * 10),
-                        new Vec2(this.wind.x, 0.2),
+                        rx,
+                        ry,
+                        new Vec2(rtx, rty),
                         this.currentModel
                     )
                 )
@@ -68,6 +83,12 @@ export class WeatherController {
 
     update(): void {
 
+        for (var i = 0; i < this.particles.length; i++) {
+            if (this.particles[i].point.y > 55) {
+                this.particles.splice(i, 1);
+                i--;
+            }
+        }
         for (var i = 0; i < this.particles.length; i++) {
             this.particles[i].update();
         }
@@ -84,9 +105,14 @@ export class WeatherController {
         if (this.wind.x < -1) {
             this.wind.x = -1;
         }
-        for (var i = 0; i < this.particles.length; i++) {
-            this.particles[i].velocity.x = this.wind.x;
-        }
+
+        this.currentModel.setForce(
+            new Vec2(
+                wind.x,
+                this.currentModel.force.y
+            )
+        );
+
     }
 
     render(draw: Draw, worldScale: number) {

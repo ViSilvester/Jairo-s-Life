@@ -1,5 +1,5 @@
 import { InputController } from "../../controller/inputController/inputController.js";
-import { WeatherController } from "../../controller/weatherController/weather.js";
+import { WeatherController } from "../../controller/weatherController/weatherController.js";
 import { Draw } from "../draw/draw.js";
 import { Vec2 } from "../geometry/geometry.js";
 import { Terrain } from "../terrain/terrain.js";
@@ -27,7 +27,7 @@ export class Game {
         this.weatherController.update();
     }
     render() {
-        this.draw.fillBackgroudColor(0, 100, 255);
+        this.draw.fillBackgroudColor(this.weatherController.backgroundColor.x, this.weatherController.backgroundColor.y, this.weatherController.backgroundColor.z);
         this.weatherController.render(this.draw, this.worldScale);
         this.terrain.render(this.draw, this.worldScale);
     }

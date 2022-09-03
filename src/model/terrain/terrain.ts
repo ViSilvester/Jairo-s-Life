@@ -12,7 +12,7 @@ export class Terrain {
     }
 
     create(): void {
-        var lastValue = 0;
+        var lastValue = this.baseGroundLevel;
         for (var i = 0; i < 10; i++) {
 
             var value = Math.random() * 5;
@@ -29,6 +29,16 @@ export class Terrain {
         }
     }
 
+    getTerrainVertices(): Array<Vec2> {
+        var vertices: Array<Vec2> = [];
+
+        for (var i = 1; i < this.ground.length; i++) {
+            vertices.push(this.ground[i - 1]);
+            vertices.push(this.ground[i]);
+        }
+        return vertices;
+    }
+
 
     render(draw: Draw, worldScale: number): void {
 
@@ -36,11 +46,11 @@ export class Terrain {
 
             let p1 = new Vec2(
                 this.ground[i].x * worldScale,
-                draw.height - (this.ground[i].y + this.baseGroundLevel) * worldScale
+                this.ground[i].y * worldScale
             );
             let p2 = new Vec2(
                 this.ground[i + 1].x * worldScale,
-                draw.height - (this.ground[i + 1].y + this.baseGroundLevel) * worldScale
+                this.ground[i + 1].y * worldScale
             );
             let p3 = new Vec2(
                 this.ground[i + 1].x * worldScale,

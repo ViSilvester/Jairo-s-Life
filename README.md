@@ -14,3 +14,7 @@ working in progress
 # build
 
 Just compile the source code using the provided tsconfig file.
+
+# run
+
+You can just serve from the main folder using wathever server method you like. 

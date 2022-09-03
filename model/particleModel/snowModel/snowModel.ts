@@ -20,6 +20,6 @@ export class SnowModel extends ParticleModel {
             particle.point.x * worldScale,
             particle.point.y * worldScale
         );
-        draw.circle(p, 2, 255, 255, 255)
+        draw.circle(p, 1.2, 255, 255, 255)
     }
 }

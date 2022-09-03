@@ -10,6 +10,6 @@ export class SnowModel extends ParticleModel {
     }
     render(particle, draw, worldScale) {
         let p = new Vec2(particle.point.x * worldScale, particle.point.y * worldScale);
-        draw.circle(p, 2, 255, 255, 255);
+        draw.circle(p, 1.2, 255, 255, 255);
     }
 }

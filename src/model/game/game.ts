@@ -21,7 +21,6 @@ export class Game {
     audioController = new AudioController();
     worldlimit = 1000000;
 
-
     constructor() {
 
         this.player = new Player(new Vec2(25, 0), new Vec2(0, 0), 1);
@@ -59,9 +58,16 @@ export class Game {
         }
 
 
-        if (Math.random() < 0.001 &&
-            this.weatherController.currentWeather == enumWeater.snow) {
-            this.audioController.playSnowMusic();
+        if (Math.random() < 0.001) {
+            if (this.weatherController.currentWeather == enumWeater.snow) {
+                this.audioController.playSnowMusic();
+            }
+            if (this.weatherController.currentWeather == enumWeater.rain) {
+                this.audioController.playRainMusic();
+            }
+            if (this.weatherController.currentWeather == enumWeater.sun) {
+                this.audioController.playSunMusic();
+            }
         }
         this.weatherController.spawn(this.draw.width / this.worldScale, this.camera);
         this.weatherController.update(this.camera);

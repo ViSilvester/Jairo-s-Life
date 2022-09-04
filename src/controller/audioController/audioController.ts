@@ -6,29 +6,49 @@ export class AudioController {
     isPlaying = false;
 
     playSnowMusic() {
-        if (!this.isPlaying) {
-            this.snowMusic.play();
-            this.snowMusic.onended = () => {
-                this.isPlaying = false;
+        try {
+            if (!this.isPlaying) {
+                this.snowMusic.play();
+                this.snowMusic.onended = () => {
+                    this.isPlaying = false;
+                }
+                this.isPlaying = true;
             }
-            this.isPlaying = true;
+        }
+        catch (e) {
+            this.isPlaying = false;
+
         }
     }
 
     playSunMusic() {
-        if (!this.isPlaying) {
-            this.sunMusic.play();
-            this.sunMusic.onended = () => {
-                this.isPlaying = false;
+        try {
+            if (!this.isPlaying) {
+                this.sunMusic.play();
+                this.sunMusic.onended = () => {
+                    this.isPlaying = false;
+                }
+                this.isPlaying = true;
             }
+        }
+        catch (e) {
+            this.isPlaying = false;
+
         }
     }
     playRainMusic() {
-        if (!this.isPlaying) {
-            this.rainMusic.play();
-            this.rainMusic.onended = () => {
-                this.isPlaying = false;
+        try {
+            if (!this.isPlaying) {
+                this.rainMusic.play();
+                this.rainMusic.onended = () => {
+                    this.isPlaying = false;
+                }
+                this.isPlaying = true;
             }
+        }
+        catch (e) {
+            this.isPlaying = false;
+
         }
     }
 

@@ -1,3 +1,4 @@
+import { Camera } from "../camera/camera.js";
 import { Draw } from "../draw/draw.js";
 import { geometryUtils, Vec2 } from "../geometry/geometry.js";
 
@@ -23,10 +24,10 @@ export class Player {
         this.requestedVel = vel;
     }
 
-    render(draw: Draw, worldScale: number) {
+    render(draw: Draw, worldScale: number, camera: Camera) {
         var p = new Vec2(
-            this.pos.x * worldScale,
-            this.pos.y * worldScale
+            (this.pos.x - camera.VPos.x) * worldScale,
+            (this.pos.y - camera.VPos.y) * worldScale
         );
         draw.circle(p, this.radius * worldScale, 255, 0, 0);
     }
@@ -80,6 +81,16 @@ export class Player {
         }
 
         this.pos.x += this.vel.x;
+
+        // limita movimento
+
+        if (this.pos.x < 0) {
+            this.pos.x = 0;
+        }
+
+        if (this.pos.x > 1000000) {
+            this.pos.x = 1000000;
+        }
 
         // reseta forças
 

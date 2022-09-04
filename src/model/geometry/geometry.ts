@@ -73,4 +73,39 @@ export class geometryUtils {
         return v;
     }
 
+    vecModulo(p: Vec2) {
+        return Math.sqrt((p.x * p.x) + (p.y * p.y))
+    }
+
+    produtoEscalar(p1: Vec2, p2: Vec2) {
+        return (p1.x * p2.x) + (p1.y * p2.y);
+    }
+
+    vecMultiplication(p1: Vec2, n: number) {
+        return new Vec2(p1.x * n, p1.y * n);
+    }
+
+    vecProjection(p1: Vec2, p2: Vec2) {
+
+        return this.vecMultiplication(
+            p2,
+            (this.produtoEscalar(p1, p2) / this.produtoEscalar(p2, p2))
+        );
+    }
+
+    interpolateVec3(p1: Vec3, p2: Vec3, level: number) {
+        return new Vec3(
+            p1.x + (level * (p2.x - p1.x)),
+            p1.y + (level * (p2.y - p1.y)),
+            p1.z + (level * (p2.z - p1.z))
+        );
+    }
+
+    interpolateVec2(p1: Vec2, p2: Vec2, level: number) {
+        return new Vec2(
+            p1.x + (level * (p2.x - p1.x)),
+            p1.y + (level * (p2.y - p1.y)),
+        );
+    }
+
 }

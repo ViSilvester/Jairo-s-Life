@@ -1,3 +1,4 @@
+import { Camera } from "../camera/camera.js";
 import { Draw } from "../draw/draw.js";
 import { Vec2 } from "../geometry/geometry.js";
 import { Particle } from "../particle/particle.js";
@@ -20,7 +21,7 @@ export abstract class ParticleModel {
         this.force.y = force.y;
     }
 
-    abstract render(particle: Particle, draw: Draw, worldScale: number): void;
+    abstract render(particle: Particle, draw: Draw, worldScale: number, camera: Camera): void;
 
 
     update(particle: Particle): void {

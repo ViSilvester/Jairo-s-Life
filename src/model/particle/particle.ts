@@ -1,3 +1,4 @@
+import { Camera } from "../camera/camera.js";
 import { Draw } from "../draw/draw.js";
 import { Vec2 } from "../geometry/geometry.js";
 import { ParticleModel } from "../particleModel/particleModel.js";
@@ -17,7 +18,7 @@ export class Particle {
         this.model.update(this);
     }
 
-    render(draw: Draw, worldScale: number) {
-        this.model.render(this, draw, worldScale);
+    render(draw: Draw, worldScale: number, camera: Camera) {
+        this.model.render(this, draw, worldScale, camera);
     }
 }

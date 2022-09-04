@@ -1,4 +1,6 @@
+import { AudioController } from "../../controller/audioController/audioController.js";
 import { InputController } from "../../controller/inputController/inputController.js";
+import { enumWeater } from "../../controller/weatherController/enum_weather.js";
 import { WeatherController } from "../../controller/weatherController/weatherController.js";
 import { Camera } from "../camera/camera.js";
 import { Draw } from "../draw/draw.js";
@@ -16,6 +18,7 @@ export class Game {
     inputController: InputController;
     player: Player;
     camera: Camera;
+    audioController = new AudioController();
     worldlimit = 1000000;
 
 
@@ -49,10 +52,16 @@ export class Game {
 
         this.inputController.update();
 
-        if (Math.random() < 0.001) {
+        if (Math.random() < 0.01) {
             this.weatherController.setWind(
-                new Vec2((Math.random() - 0.5) * 0.25, 0)
+                new Vec2((Math.random() - 0.5) * 0.5, 0)
             );
+        }
+
+
+        if (Math.random() < 0.001 &&
+            this.weatherController.currentWeather == enumWeater.snow) {
+            this.audioController.playSnowMusic();
         }
         this.weatherController.spawn(this.draw.width / this.worldScale, this.camera);
         this.weatherController.update(this.camera);

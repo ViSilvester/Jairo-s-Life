@@ -1,7 +1,7 @@
 
 import { Camera } from "../../model/camera/camera.js";
 import { Draw } from "../../model/draw/draw.js";
-import { Vec2, Vec3 } from "../../model/geometry/geometry.js";
+import { geometryUtils, Vec2, Vec3 } from "../../model/geometry/geometry.js";
 import { Particle } from "../../model/particle/particle.js";
 import { ParticleModel } from "../../model/particleModel/particleModel.js";
 import { RainModel } from "../../model/particleModel/rainModel/rainModel.js";
@@ -13,16 +13,20 @@ export class WeatherController {
 
     particles: Array<Particle>;
     wind: Vec2;
+    targetWind: Vec2;
     currentWeather!: enumWeater;
     currentModel!: ParticleModel;
     spawnRate!: number;
     spawnQuantity!: number;
     turbulenceRange!: number;
     skyController: SkyController;
+    windInterpolationLevel = 1;
+    utils = new geometryUtils();
 
 
     constructor() {
         this.wind = new Vec2(0, 0);
+        this.targetWind = this.wind;
         this.skyController = new SkyController(enumWeater.snow);
         this.particles = [];
         this.setWeather(enumWeater.snow);
@@ -84,6 +88,20 @@ export class WeatherController {
 
     update(camera: Camera): void {
 
+        if (Math.random() < 0.001) {
+            const n = Math.random() * 2;
+            if (n < 0.3) {
+                this.setWeather(enumWeater.snow)
+            }
+            else if (n < 0.6) {
+                this.setWeather(enumWeater.rain)
+            }
+            else if (n < 0.9) {
+                this.setWeather(enumWeater.sun)
+            }
+        }
+
+
         this.skyController.update(this.currentWeather);
 
         for (var i = 0; i < this.particles.length; i++) {
@@ -92,6 +110,23 @@ export class WeatherController {
                 i--;
             }
         }
+
+        if (this.windInterpolationLevel < 1) {
+            this.wind = this.utils.interpolateVec2(
+                this.wind,
+                this.targetWind,
+                this.windInterpolationLevel
+            );
+            this.windInterpolationLevel += 0.001;
+        }
+
+        this.currentModel.setForce(
+            new Vec2(
+                this.wind.x,
+                this.currentModel.force.y
+            )
+        );
+
         for (var i = 0; i < this.particles.length; i++) {
             this.particles[i].update();
         }
@@ -99,22 +134,10 @@ export class WeatherController {
 
     setWind(wind: Vec2) {
 
-        this.wind.x = wind.x;
-        this.wind.y = wind.y;
-
-        if (this.wind.x > 1) {
-            this.wind.x = 1;
+        if (wind.x != this.wind.x && wind.x != this.wind.x) {
+            this.targetWind = wind;
+            this.windInterpolationLevel = 0;
         }
-        if (this.wind.x < -1) {
-            this.wind.x = -1;
-        }
-
-        this.currentModel.setForce(
-            new Vec2(
-                wind.x,
-                this.currentModel.force.y
-            )
-        );
 
     }
 

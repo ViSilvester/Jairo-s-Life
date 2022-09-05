@@ -1,10 +1,15 @@
+import "snow_theme.mp3"
+
+
 export class AudioController {
 
-    snowMusic = new Audio("../../../assets/snow_theme.mp3");
-    sunMusic = new Audio("../../../assets/sun_theme_1.mp3");
-    rainMusic = new Audio("../../../assets/sun_theme_2.mp3");
-    isPlaying = false;
 
+
+
+    snowMusic = document.getElementById("snow_theme") as HTMLAudioElement;
+    sunMusic = document.getElementById("sun_theme_1") as HTMLAudioElement;
+    rainMusic = document.getElementById("sun_theme_2") as HTMLAudioElement;
+    isPlaying = false;
     playSnowMusic() {
         try {
             if (!this.isPlaying) {

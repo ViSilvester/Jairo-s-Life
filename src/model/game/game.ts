@@ -45,6 +45,8 @@ export class Game {
         // Ouve teclado
         this.inputController.listen();
 
+        this.audioController.playSnowMusic();
+
     }
 
     update(): void {
@@ -58,7 +60,7 @@ export class Game {
         }
 
 
-        if (Math.random() < 0.001) {
+        if (Math.random() < 0.01) {
             if (this.weatherController.currentWeather == enumWeater.snow) {
                 this.audioController.playSnowMusic();
             }

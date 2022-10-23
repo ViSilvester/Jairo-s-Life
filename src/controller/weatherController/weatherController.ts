@@ -117,7 +117,7 @@ export class WeatherController {
                 this.targetWind,
                 this.windInterpolationLevel
             );
-            this.windInterpolationLevel += 0.001;
+            this.windInterpolationLevel += 0.0001;
         }
 
         this.currentModel.setForce(

@@ -45,22 +45,20 @@ export class Game {
         // Ouve teclado
         this.inputController.listen();
 
-        this.audioController.playSnowMusic();
-
     }
 
     update(): void {
 
         this.inputController.update();
 
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.001) {
             this.weatherController.setWind(
-                new Vec2((Math.random() - 0.5) * 0.5, 0)
+                new Vec2((Math.random() - 0.5), 0)
             );
         }
 
 
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.001) {
             if (this.weatherController.currentWeather == enumWeater.snow) {
                 this.audioController.playSnowMusic();
             }

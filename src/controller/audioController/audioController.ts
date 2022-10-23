@@ -5,53 +5,53 @@ export class AudioController {
     rainMusic = document.getElementById("sun_theme_2") as HTMLAudioElement;
     isPlaying = false;
 
+    async playSnowMusic() {
 
-    playSnowMusic() {
-        try {
-            if (!this.isPlaying) {
-                this.snowMusic.play();
-                this.snowMusic.onended = () => {
-                    this.isPlaying = false;
-                }
+        if (!this.isPlaying && this.snowMusic) {
+            try {
+                await this.snowMusic.play();
                 this.isPlaying = true;
             }
+            catch (e) {
+                this.isPlaying = false;
+            }
         }
-        catch (e) {
+
+        this.snowMusic.onended = () => {
+            this.isPlaying = false;
+        };
+    }
+
+    async playSunMusic() {
+        if (!this.isPlaying) {
+            try {
+                await this.sunMusic.play();
+                this.isPlaying = true;
+            }
+            catch (e) {
+                this.isPlaying = false;
+            }
+        }
+
+        this.sunMusic.onended = () => {
+            this.isPlaying = false;
+        };
+    }
+
+    async playRainMusic() {
+
+        if (!this.isPlaying) {
+            try {
+                await this.rainMusic.play();
+                this.isPlaying = true;
+            }
+            catch (e) {
+                this.isPlaying = false;
+            }
+        }
+
+        this.rainMusic.onended = () => {
             this.isPlaying = false;
         }
     }
-
-    playSunMusic() {
-        try {
-            if (!this.isPlaying) {
-
-                this.sunMusic.play();
-                this.sunMusic.onended = () => {
-                    this.isPlaying = false;
-                }
-                this.isPlaying = true;
-            }
-        }
-        catch (e) {
-            this.isPlaying = false;
-
-        }
-    }
-    playRainMusic() {
-        try {
-            if (!this.isPlaying) {
-
-                this.rainMusic.play();
-                this.rainMusic.onended = () => {
-                    this.isPlaying = false;
-                }
-                this.isPlaying = true;
-            }
-        }
-        catch (e) {
-            this.isPlaying = false;
-
-        }
-    }
-
 }
